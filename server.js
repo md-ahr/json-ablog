@@ -11,6 +11,13 @@ const router = jsonServer.router("db.json");
 
 const middlewares = jsonServer.defaults();
 
+const PORT = process.env.PORT || 9000;
+
+// Bind the router db to the app
+app.db = router.db;
+
+app.use(middlewares);
+
 const rules = auth.rewriter({
   user: 640,
   categories: 660,
@@ -20,12 +27,9 @@ const rules = auth.rewriter({
   likeDislike: 660,
 });
 
-app.use(middlewares);
 app.use(rules);
 app.use(auth);
 app.use(router);
-
-const PORT = process.env.PORT || 9000;
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
